@@ -4,7 +4,7 @@ import com.xadrez.engine.Cor;
 import com.xadrez.engine.tabuleiro.Movimento;
 import com.xadrez.engine.tabuleiro.Tabuleiro;
 
-import java.util.List;
+import java.util.Collection;
 
 public abstract class Peca {
 
@@ -20,6 +20,6 @@ public abstract class Peca {
         return corPeca;
     }
 
-    public abstract List<Movimento> calcularMovimentosLegais(final Tabuleiro tabuleiro);
+    public abstract Collection<Movimento> calcularMovimentosLegais(final Tabuleiro tabuleiro);
 
 }
