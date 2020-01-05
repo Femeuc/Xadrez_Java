@@ -1,6 +1,18 @@
 package com.xadrez.engine;
 
 public enum Cor {
-    BRANCO,
-    PRETO
+    BRANCO {
+        @Override
+        public int getDirecao() {
+            return -1;
+        }
+    },
+    PRETO {
+        @Override
+        public int getDirecao() {
+            return 1;
+        }
+    };
+
+    public abstract int getDirecao();
 }

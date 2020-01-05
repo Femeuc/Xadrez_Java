@@ -13,7 +13,7 @@ public abstract class Quadrado {
     private static Map<Integer, QuadradoVazio> criarQuadrados() {
         final Map<Integer, QuadradoVazio> mapaQuadradosVazios = new HashMap<>();
 
-        for(int i = 0; i < 64; i++) {
+        for(int i = 0; i < TabuleiroUtil.QUANTIDADE_QUADRADOS; i++) {
             mapaQuadradosVazios.put(i, new QuadradoVazio());
         }
 
@@ -24,7 +24,7 @@ public abstract class Quadrado {
         return peca != null ? new Ocupado(coordenada, peca) : QUADRADOS_VAZIOS.get(coordenada);
     }
 
-    private Quadrado (int coord) {
+    private Quadrado (final int coord) {
         coordenada = coord;
     }
 
@@ -49,7 +49,7 @@ public abstract class Quadrado {
     public static final class Ocupado extends Quadrado {
         private final Peca pecaQudrado;
 
-        private Ocupado(int coordenada, Peca pecaQudrado) {
+        private Ocupado(int coordenada, final Peca pecaQudrado) {
             super(coordenada);
             this.pecaQudrado = pecaQudrado;
         }

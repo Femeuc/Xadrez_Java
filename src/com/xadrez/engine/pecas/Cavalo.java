@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.xadrez.engine.tabuleiro.Movimento.*;
+
 public class Cavalo extends Peca {
 
     private final static int[] MOVIMENTOS_POSSIVEIS = {-17, -15, -10, -6, 6,  10, 15, 17};
@@ -19,7 +21,7 @@ public class Cavalo extends Peca {
     }
 
     @Override
-    public Collection<Movimento> calcularMovimentosLegais(Tabuleiro tabuleiro) {
+    public Collection<Movimento> calcularMovimentosLegais(final  Tabuleiro tabuleiro) {
 
         int movimentoCandidato;
         final List<Movimento> movimentosLegais = new ArrayList<>();
@@ -35,12 +37,12 @@ public class Cavalo extends Peca {
                 }
                 final Quadrado quadradoCandidato = tabuleiro.getQuadrado(movimentoCandidato);
                 if(!quadradoCandidato.isOcupado()) {
-                    movimentosLegais.add(new Movimento());
+                    movimentosLegais.add(new MovimentoSemCaptura(tabuleiro, this, movimentoCandidato));
                 } else {
                     final Peca destinoPeca = quadradoCandidato.getPeca();
                     final Cor corPeca = destinoPeca.getCorPeca();
                     if(this.corPeca != corPeca) {
-                        movimentosLegais.add(new Movimento());
+                        movimentosLegais.add(new MovimentoDeCaptura(tabuleiro, this, movimentoCandidato, destinoPeca));
                     }
                 }
             }
