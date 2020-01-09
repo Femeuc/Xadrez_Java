@@ -7,6 +7,9 @@ public class TabuleiroUtil {
     public static final boolean[] SETIMA_COLUNA = iniciarColuna(6);
     public static final boolean[] OITAVA_COLUNA = iniciarColuna(7);
 
+    public static final boolean[] SEGUNDA_LINHA = null;
+    public static final boolean[] SETIMA_LINHA = null;
+
     public static final int QUANTIDADE_QUADRADOS = 64;
     public static final int QUADRADOS_POR_LINHA = 8;
 
