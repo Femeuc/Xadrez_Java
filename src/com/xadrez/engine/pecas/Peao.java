@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class Peao extends Peca{
-    private final static int[] MOVIMENTOS_POSSIVEIS = {8, 16};
+    private final static int[] MOVIMENTOS_POSSIVEIS = {8, 7, 9, 16};
 
     Peao(final int posicaoPeca, final Cor corPeca) {
         super(posicaoPeca, corPeca);
@@ -20,9 +20,9 @@ public class Peao extends Peca{
     @Override
     public Collection<Movimento> calcularMovimentosLegais(final Tabuleiro tabuleiro) {
         final List<Movimento> movimentosLegais = new ArrayList<>();
-        final int movimentoCandidato;
+        int movimentoCandidato;
         for(final int movimentoAtual : MOVIMENTOS_POSSIVEIS) {
-            movimentoCandidato = this.posicaoPeca + (this.getCorPeca().getDirecao() * movimentoAtual);
+            movimentoCandidato = this.posicaoPeca + (this.corPeca.getDirecao() * movimentoAtual);
             if(!TabuleiroUtil.isQuadradoValido(movimentoCandidato)) {
                 continue;
             }
@@ -35,8 +35,25 @@ public class Peao extends Peca{
                 if(!tabuleiro.getQuadrado(atrasMovimentoCandidato).isOcupado() && !tabuleiro.getQuadrado(movimentoCandidato).isOcupado()) {
                     movimentosLegais.add(new MovimentoSemCaptura(tabuleiro, this, movimentoCandidato));
                 }
+            } else if(movimentoAtual == 7 &&
+                    !((TabuleiroUtil.OITAVA_COLUNA[this.posicaoPeca] && this.corPeca.isBranco()) ||
+                      (TabuleiroUtil.PRIMEIRA_COLUNA[this.posicaoPeca] && this.corPeca.isPreto()) )) {
+                if(tabuleiro.getQuadrado(movimentoCandidato).isOcupado()) {
+                     final Peca pecaNoCandidato = tabuleiro.getQuadrado(movimentoCandidato).getPeca();
+                     if(this.corPeca != pecaNoCandidato.getCorPeca()) {
+                     }
+                }
+
+            } else if(movimentoAtual == 9 &&
+                    !((TabuleiroUtil.PRIMEIRA_COLUNA[this.posicaoPeca] && this.corPeca.isBranco()) ||
+                     (TabuleiroUtil.OITAVA_COLUNA[this.posicaoPeca] && this.corPeca.isPreto()) )) {
+                if(tabuleiro.getQuadrado(movimentoCandidato).isOcupado()) {
+                    final Peca pecaNoCandidato = tabuleiro.getQuadrado(movimentoCandidato).getPeca();
+                    if(this.corPeca != pecaNoCandidato.getCorPeca()) {
+                    }
+                }
             }
         }
-        return null;
+        return movimentosLegais;
     }
 }
