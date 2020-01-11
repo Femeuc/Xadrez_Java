@@ -18,6 +18,10 @@ public abstract class Peca {
         this.isPrimeiroMovimento = false;
     }
 
+    public int getPosicaoPeca() {
+        return this.posicaoPeca;
+    }
+
     public Cor getCorPeca() {
         return corPeca;
     }

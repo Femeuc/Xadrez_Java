@@ -13,7 +13,7 @@ import java.util.List;
 public class Peao extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {8, 7, 9, 16};
 
-    Peao(final int posicaoPeca, final Cor corPeca) {
+    public Peao(Cor corPeca, int posicaoPeca) {
         super(posicaoPeca, corPeca);
     }
 

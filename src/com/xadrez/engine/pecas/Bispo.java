@@ -15,7 +15,7 @@ import java.util.List;
 public class Bispo extends Peca {
     private final static int[] MOVIMENTOS_POSSIVEIS = {-9, -7, 7, 9};
 
-    Bispo(int posicaoPeca, Cor corPeca) {
+    public Bispo(Cor corPeca, int posicaoPeca) {
         super(posicaoPeca, corPeca);
     }
 

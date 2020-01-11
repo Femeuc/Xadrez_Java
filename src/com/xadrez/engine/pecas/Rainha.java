@@ -13,7 +13,7 @@ import java.util.List;
 public class Rainha extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    Rainha(int posicaoPeca, Cor corPeca) {
+    public Rainha(Cor corPeca, int posicaoPeca) {
         super(posicaoPeca, corPeca);
     }
 

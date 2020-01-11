@@ -13,7 +13,7 @@ import java.util.List;
 public class Torre extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {-8, -1, 1, 8};
 
-    Torre(int posicaoPeca, Cor corPeca) {
+    public Torre(Cor corPeca, int posicaoPeca) {
         super(posicaoPeca, corPeca);
     }
 

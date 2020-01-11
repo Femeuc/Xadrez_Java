@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Quadrado {
-    protected final int coordenada;-
+    protected final int coordenada;
 
     private static final Map<Integer, QuadradoVazio> QUADRADOS_VAZIOS = criarQuadrados();
 
@@ -14,7 +14,7 @@ public abstract class Quadrado {
         final Map<Integer, QuadradoVazio> mapaQuadradosVazios = new HashMap<>();
 
         for(int i = 0; i < TabuleiroUtil.QUANTIDADE_QUADRADOS; i++) {
-            mapaQuadradosVazios.put(i, new QuadradoVazio());
+            mapaQuadradosVazios.put(i, new QuadradoVazio(i));
         }
 
         return mapaQuadradosVazios; // ESSE RETORNO PODE SER MELHORADO com o uso de uma biblioteca: ImutableMap.copyOf()

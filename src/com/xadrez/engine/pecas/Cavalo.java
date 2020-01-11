@@ -16,7 +16,7 @@ public class Cavalo extends Peca {
 
     private final static int[] MOVIMENTOS_POSSIVEIS = {-17, -15, -10, -6, 6,  10, 15, 17};
 
-    Cavalo(final int posicaoPeca, final Cor corPeca) {
+    public Cavalo(Cor corPeca, int posicaoPeca) {
         super(posicaoPeca, corPeca);
     }
 
