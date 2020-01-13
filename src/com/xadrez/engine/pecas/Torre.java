@@ -48,6 +48,11 @@ public class Torre extends Peca{
         return movimentosLegais;
     }
 
+    @Override
+    public String toString() {
+        return TipoDePeca.TORRE.toString();
+    }
+
     private static boolean isExclusaoPrimeiraColuna(final int posicaoAtual, final int posicaoCandidata) {
         return TabuleiroUtil.PRIMEIRA_COLUNA[posicaoAtual] && (posicaoCandidata == -1);
     }

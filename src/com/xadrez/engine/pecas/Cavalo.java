@@ -51,6 +51,11 @@ public class Cavalo extends Peca {
         return movimentosLegais;
     }
 
+    @Override
+    public String toString() {
+        return TipoDePeca.CAVALO.toString();
+    }
+
     private static boolean isExclusaoPrimeiraColuna(final int posicaoAtual, final int posicaoCandidata) {
         return TabuleiroUtil.PRIMEIRA_COLUNA[posicaoAtual] && (posicaoCandidata == -17 || posicaoCandidata == -10 || posicaoCandidata == 6 || posicaoCandidata == 15);
     }

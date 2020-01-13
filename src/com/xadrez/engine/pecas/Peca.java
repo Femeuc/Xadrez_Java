@@ -32,4 +32,24 @@ public abstract class Peca {
 
     public abstract Collection<Movimento> calcularMovimentosLegais(final Tabuleiro tabuleiro);
 
+    public enum TipoDePeca {
+        PEAO("P"),
+        CAVALO("C"),
+        BISPO("B"),
+        TORRE("T"),
+        RAINHA("D"), // D de "dama"
+        REI("R");
+
+        private String nomeDaPeca;
+
+        TipoDePeca(final String nomeDaPeca) {
+            this.nomeDaPeca = nomeDaPeca;
+        }
+
+        @Override
+        public String toString() {
+            return this.nomeDaPeca;
+        }
+    }
+
 }

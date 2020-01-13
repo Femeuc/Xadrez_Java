@@ -46,6 +46,11 @@ public class Rei extends Peca{
         return movimentosLegais;
     }
 
+    @Override
+    public String toString() {
+        return TipoDePeca.REI.toString();
+    }
+
     private static boolean isExclusaoPrimeiraColuna(final int posicaoAtual, final int posicaoCandidata) {
         return TabuleiroUtil.PRIMEIRA_COLUNA[posicaoAtual] && (posicaoCandidata == -9 || posicaoCandidata == -1 || posicaoCandidata == 7);
     }

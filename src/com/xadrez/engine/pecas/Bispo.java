@@ -50,6 +50,11 @@ public class Bispo extends Peca {
         return movimentosLegais;
     }
 
+    @Override
+    public String toString() {
+        return TipoDePeca.BISPO.toString();
+    }
+
     private static boolean isExclusaoPrimeiraColuna(final int posicaoAtual, final int posicaoCandidata) {
         return TabuleiroUtil.PRIMEIRA_COLUNA[posicaoAtual] && (posicaoCandidata == -9 || posicaoCandidata == 7);
     }

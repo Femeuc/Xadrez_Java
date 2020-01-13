@@ -48,6 +48,11 @@ public class Rainha extends Peca{
         return movimentosLegais;
     }
 
+    @Override
+    public String toString() {
+        return TipoDePeca.RAINHA.toString();
+    }
+
     private static boolean isExclusaoPrimeiraColuna(final int posicaoAtual, final int posicaoCandidata) {
         return TabuleiroUtil.PRIMEIRA_COLUNA[posicaoAtual] && (posicaoCandidata == -1 || posicaoCandidata == -9 || posicaoCandidata == 7);
     }

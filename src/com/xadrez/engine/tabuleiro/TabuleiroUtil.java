@@ -7,14 +7,14 @@ public class TabuleiroUtil {
     public static final boolean[] SETIMA_COLUNA = iniciarColuna(6);
     public static final boolean[] OITAVA_COLUNA = iniciarColuna(7);
 
-    public static final boolean[] SEGUNDA_LINHA = null;
-    public static final boolean[] SETIMA_LINHA = null;
+    public static final boolean[] SEGUNDA_LINHA = iniciarLinha(8);   // ID do quadrado em que a linha começa
+    public static final boolean[] SETIMA_LINHA = iniciarLinha(48);
 
     public static final int QUANTIDADE_QUADRADOS = 64;
     public static final int QUADRADOS_POR_LINHA = 8;
 
     private TabuleiroUtil() {
-        throw new RuntimeException("Você não pode me instanciar!")
+        throw new RuntimeException("Você não pode me instanciar!");
     }
 
     private static boolean[] iniciarColuna(int numeroColuna) {
@@ -24,6 +24,15 @@ public class TabuleiroUtil {
             numeroColuna += QUADRADOS_POR_LINHA;
         } while(numeroColuna < QUANTIDADE_QUADRADOS);
         return coluna;
+    }
+
+    private static boolean[] iniciarLinha(int numeroDaLinha) {
+        final boolean[] linha = new boolean[QUANTIDADE_QUADRADOS];
+        do {
+            linha[numeroDaLinha] = true;
+            numeroDaLinha++;
+        } while(numeroDaLinha % QUADRADOS_POR_LINHA != 0);
+        return linha;
     }
 
     public static boolean isQuadradoValido(final int coordenada) {

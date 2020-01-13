@@ -3,10 +3,7 @@ package com.xadrez.engine.tabuleiro;
 import com.xadrez.engine.Cor;
 import com.xadrez.engine.pecas.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Tabuleiro {
 
@@ -18,9 +15,33 @@ public class Tabuleiro {
         this.tabuleiroDoJogo = criarTabuleiroDoJogo(builder);
         this.pecasBrancas = calcularPecasAtivas(this.tabuleiroDoJogo, Cor.BRANCO);
         this.pecasPretas = calcularPecasAtivas(this.tabuleiroDoJogo, Cor.PRETO);
+
+        final Collection<Movimento> movimentosLegaisDoBranco = calcularMovimentosLegais(this.pecasBrancas);
+        final Collection<Movimento> movimentosLegaisDoPreto = calcularMovimentosLegais(this.pecasPretas);
     }
 
-    private Collection<Peca> calcularPecasAtivas(Quadrado[] tabuleiroDoJogo, Cor cor) {
+    @Override
+    public String toString() {
+        final StringBuilder construtor = new StringBuilder();
+        for(int i = 0; i < TabuleiroUtil.QUANTIDADE_QUADRADOS; i++) {
+            final String textoDoQuadrado = this.tabuleiroDoJogo[i].toString();
+            construtor.append(String.format("%3s", textoDoQuadrado));
+            if((i + 1) % TabuleiroUtil.QUADRADOS_POR_LINHA == 0) {
+                construtor.append("\n");
+            }
+        }
+        return construtor.toString();
+    }
+
+    private Collection<Movimento> calcularMovimentosLegais(final Collection<Peca> pecas) {
+        final List<Movimento> movimentosLegais = new ArrayList<>();
+        for(final Peca peca : pecas) {
+            movimentosLegais.addAll(peca.calcularMovimentosLegais(this));
+        }
+        return movimentosLegais;
+    }
+
+    private static Collection<Peca> calcularPecasAtivas(Quadrado[] tabuleiroDoJogo, Cor cor) {
         final List<Peca> pecasAtivas = new ArrayList<>();
         for(final Quadrado quadrado : tabuleiroDoJogo) {
             if(quadrado.isOcupado()) {
@@ -45,7 +66,7 @@ public class Tabuleiro {
         return quadrados;
     }
 
-    private static Tabuleiro criarTabuleiroPadrao() {
+    public static Tabuleiro criarTabuleiroPadrao() {
         final Builder builder = new Builder();
         // Layout das Peças Pretas
         builder.setPeca(new Torre(Cor.PRETO, 0));
@@ -92,6 +113,7 @@ public class Tabuleiro {
         Cor turnoDoJogador;
 
         public Builder() {
+            this.configuracaoDoTabuleiro = new HashMap<>();
         }
 
         public Builder setPeca(final Peca peca) {

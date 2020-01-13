@@ -36,6 +36,12 @@ public abstract class Quadrado {
         private QuadradoVazio(final int coordenada) {
             super(coordenada);
         }
+
+        @Override
+        public String toString() {
+            return "-";
+        }
+
         @Override
         public boolean isOcupado() {
             return false;
@@ -52,6 +58,12 @@ public abstract class Quadrado {
         private Ocupado(int coordenada, final Peca pecaQudrado) {
             super(coordenada);
             this.pecaQudrado = pecaQudrado;
+        }
+
+        @Override
+        public String toString() {
+            return getPeca().getCorPeca().isPreto() ? getPeca().toString().toLowerCase() :
+                    getPeca().toString();
         }
 
         @Override

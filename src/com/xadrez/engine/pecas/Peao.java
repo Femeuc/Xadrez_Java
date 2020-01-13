@@ -56,4 +56,9 @@ public class Peao extends Peca{
         }
         return movimentosLegais;
     }
+
+    @Override
+    public String toString() {
+        return TipoDePeca.PEAO.toString();
+    }
 }
