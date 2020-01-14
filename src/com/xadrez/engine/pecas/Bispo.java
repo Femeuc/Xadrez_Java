@@ -16,7 +16,7 @@ public class Bispo extends Peca {
     private final static int[] MOVIMENTOS_POSSIVEIS = {-9, -7, 7, 9};
 
     public Bispo(Cor corPeca, int posicaoPeca) {
-        super(posicaoPeca, corPeca);
+        super(TipoDePeca.BISPO, posicaoPeca, corPeca);
     }
 
     @Override

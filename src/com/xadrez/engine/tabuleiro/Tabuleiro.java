@@ -1,6 +1,9 @@
 package com.xadrez.engine.tabuleiro;
 
 import com.xadrez.engine.Cor;
+import com.xadrez.engine.jogador.Jogador;
+import com.xadrez.engine.jogador.JogadorBranco;
+import com.xadrez.engine.jogador.JogadorPreto;
 import com.xadrez.engine.pecas.*;
 
 import java.util.*;
@@ -11,13 +14,17 @@ public class Tabuleiro {
     private final Collection<Peca> pecasBrancas;
     private final Collection<Peca> pecasPretas;
 
+    private final JogadorBranco jogadorBranco;
+    private final JogadorPreto jogadorPreto;
+
     private Tabuleiro(Builder builder) {
         this.tabuleiroDoJogo = criarTabuleiroDoJogo(builder);
         this.pecasBrancas = calcularPecasAtivas(this.tabuleiroDoJogo, Cor.BRANCO);
         this.pecasPretas = calcularPecasAtivas(this.tabuleiroDoJogo, Cor.PRETO);
-
         final Collection<Movimento> movimentosLegaisDoBranco = calcularMovimentosLegais(this.pecasBrancas);
         final Collection<Movimento> movimentosLegaisDoPreto = calcularMovimentosLegais(this.pecasPretas);
+        this.jogadorBranco = new JogadorBranco(this, movimentosLegaisDoBranco, movimentosLegaisDoPreto);
+        this.jogadorPreto = new JogadorPreto(this, movimentosLegaisDoBranco, movimentosLegaisDoPreto);
     }
 
     @Override
@@ -31,6 +38,22 @@ public class Tabuleiro {
             }
         }
         return construtor.toString();
+    }
+
+    public Jogador jogadorBranco() {
+        return this.jogadorBranco;
+    }
+
+    public Jogador jogadorPreto() {
+        return this.jogadorPreto;
+    }
+
+    public Collection<Peca> getPecasPretas() {
+        return this.pecasPretas;
+    }
+
+    public Collection<Peca> getPecasBrancas() {
+        return this.pecasBrancas;
     }
 
     private Collection<Movimento> calcularMovimentosLegais(final Collection<Peca> pecas) {

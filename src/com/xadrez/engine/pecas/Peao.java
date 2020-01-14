@@ -14,7 +14,7 @@ public class Peao extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {8, 7, 9, 16};
 
     public Peao(Cor corPeca, int posicaoPeca) {
-        super(posicaoPeca, corPeca);
+        super(TipoDePeca.PEAO, posicaoPeca, corPeca);
     }
 
     @Override
