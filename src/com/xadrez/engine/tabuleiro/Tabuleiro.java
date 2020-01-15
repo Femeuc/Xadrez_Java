@@ -16,8 +16,9 @@ public class Tabuleiro {
 
     private final JogadorBranco jogadorBranco;
     private final JogadorPreto jogadorPreto;
+    private final Jogador jogadorAtual;
 
-    private Tabuleiro(Builder builder) {
+    private Tabuleiro(final Builder builder) {
         this.tabuleiroDoJogo = criarTabuleiroDoJogo(builder);
         this.pecasBrancas = calcularPecasAtivas(this.tabuleiroDoJogo, Cor.BRANCO);
         this.pecasPretas = calcularPecasAtivas(this.tabuleiroDoJogo, Cor.PRETO);
@@ -25,6 +26,7 @@ public class Tabuleiro {
         final Collection<Movimento> movimentosLegaisDoPreto = calcularMovimentosLegais(this.pecasPretas);
         this.jogadorBranco = new JogadorBranco(this, movimentosLegaisDoBranco, movimentosLegaisDoPreto);
         this.jogadorPreto = new JogadorPreto(this, movimentosLegaisDoBranco, movimentosLegaisDoPreto);
+        this.jogadorAtual = builder.turnoDoJogador.escolherJogador(this.jogadorBranco, this.jogadorPreto);
     }
 
     @Override
@@ -46,6 +48,10 @@ public class Tabuleiro {
 
     public Jogador jogadorPreto() {
         return this.jogadorPreto;
+    }
+
+    public Jogador jogadorAtual() {
+        return this.jogadorAtual;
     }
 
     public Collection<Peca> getPecasPretas() {

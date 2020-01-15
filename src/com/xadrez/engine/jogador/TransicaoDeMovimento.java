@@ -15,4 +15,8 @@ public class TransicaoDeMovimento {
         this.movimento = movimento;
         this.statusDeMovimento = statusDeMovimento;
     }
+
+    public StatusDeMovimento getStatusDeMovimento() {
+        return this.statusDeMovimento;
+    }
 }

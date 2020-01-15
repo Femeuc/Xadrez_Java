@@ -8,9 +8,9 @@ import com.xadrez.engine.tabuleiro.Tabuleiro;
 import java.util.Collection;
 
 public class JogadorPreto extends Jogador {
-    public JogadorPreto(Tabuleiro tabuleiro,
-                        Collection<Movimento> movimentosLegaisDoBranco,
-                        Collection<Movimento> movimentosLegaisDoPreto) {
+    public JogadorPreto(final Tabuleiro tabuleiro,
+                        final Collection<Movimento> movimentosLegaisDoBranco,
+                        final Collection<Movimento> movimentosLegaisDoPreto) {
         super(tabuleiro, movimentosLegaisDoPreto, movimentosLegaisDoBranco);
     }
 
