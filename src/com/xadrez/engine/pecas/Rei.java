@@ -47,6 +47,11 @@ public class Rei extends Peca{
     }
 
     @Override
+    public Rei moverPeca(Movimento movimento) {
+        return new Rei(movimento.getPecaMovida().getCorPeca(), movimento.getCoordenadaDeDestino());
+    }
+
+    @Override
     public String toString() {
         return TipoDePeca.REI.toString();
     }

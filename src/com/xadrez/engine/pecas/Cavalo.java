@@ -52,6 +52,11 @@ public class Cavalo extends Peca {
     }
 
     @Override
+    public Cavalo moverPeca(Movimento movimento) {
+        return new Cavalo(movimento.getPecaMovida().getCorPeca(), movimento.getCoordenadaDeDestino());
+    }
+
+    @Override
     public String toString() {
         return TipoDePeca.CAVALO.toString();
     }

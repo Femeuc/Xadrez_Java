@@ -58,6 +58,11 @@ public class Peao extends Peca{
     }
 
     @Override
+    public Peao moverPeca(Movimento movimento) {
+        return new Peao(movimento.getPecaMovida().getCorPeca(), movimento.getCoordenadaDeDestino());
+    }
+
+    @Override
     public String toString() {
         return TipoDePeca.PEAO.toString();
     }

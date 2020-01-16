@@ -20,6 +20,10 @@ public abstract class Movimento {
         return this.coordenadaDestino;
     }
 
+    public Peca getPecaMovida() {
+        return this.pecaMovida;
+    }
+
     public abstract Tabuleiro executar();
 
     public static final class MovimentoSemCaptura extends Movimento {
@@ -40,7 +44,7 @@ public abstract class Movimento {
             for(final Peca peca : this.tabuleiro.jogadorAtual().getOponente().getPecasAtivas()) {
                 builder.setPeca(peca);
             }
-            builder.setPeca(null);
+            builder.setPeca(this.pecaMovida.moverPeca(this));
             builder.setTurnoDoJogador(this.tabuleiro.jogadorAtual().getOponente().getCor());
             return builder.build();
         }

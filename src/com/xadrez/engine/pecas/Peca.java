@@ -12,6 +12,8 @@ public abstract class Peca {
     protected final int posicaoPeca;
     protected final Cor corPeca;
     protected final boolean isPrimeiroMovimento;
+    private final int cachedHashCode;
+
 
     Peca(final TipoDePeca tipoDePeca,
          final int posicaoPeca,
@@ -20,6 +22,35 @@ public abstract class Peca {
         this.posicaoPeca = posicaoPeca;
         this.corPeca = corPeca;
         this.isPrimeiroMovimento = false;
+        this.cachedHashCode = computeHashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.cachedHashCode;
+    }
+
+    private int computeHashCode() {
+        int resultado = this.tipoDePeca.hashCode();
+        resultado = 31 * resultado + this.corPeca.hashCode();
+        resultado = 31 * resultado + this.posicaoPeca;
+        resultado = 31 * resultado + (this.isPrimeiroMovimento ? 1 : 0);
+        return resultado;
+    }
+
+    @Override
+    public boolean equals(final Object outra) {
+        if(this == outra) {
+            return true;
+        }
+        if(!(outra instanceof Peca)) {
+            return false;
+        }
+        final Peca outraPeca = (Peca) outra;
+        return posicaoPeca == outraPeca.getPosicaoPeca() &&
+                tipoDePeca == outraPeca.getTipoDePeca() &&
+                corPeca == outraPeca.getCorPeca() &&
+                isPrimeiroMovimento == outraPeca.isPrimeiroMovimento();
     }
 
     public int getPosicaoPeca() {
@@ -39,6 +70,8 @@ public abstract class Peca {
     }
 
     public abstract Collection<Movimento> calcularMovimentosLegais(final Tabuleiro tabuleiro);
+
+    public abstract Peca moverPeca(Movimento movimento);
 
     public enum TipoDePeca {
         PEAO("P") {

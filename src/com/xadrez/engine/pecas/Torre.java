@@ -49,6 +49,11 @@ public class Torre extends Peca{
     }
 
     @Override
+    public Torre moverPeca(Movimento movimento) {
+        return new Torre(movimento.getPecaMovida().getCorPeca(), movimento.getCoordenadaDeDestino());
+    }
+
+    @Override
     public String toString() {
         return TipoDePeca.TORRE.toString();
     }

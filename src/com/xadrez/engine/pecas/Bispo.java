@@ -51,6 +51,11 @@ public class Bispo extends Peca {
     }
 
     @Override
+    public Bispo moverPeca(Movimento movimento) {
+        return new Bispo(movimento.getPecaMovida().getCorPeca(), movimento.getCoordenadaDeDestino());
+    }
+
+    @Override
     public String toString() {
         return TipoDePeca.BISPO.toString();
     }

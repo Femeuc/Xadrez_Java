@@ -49,6 +49,11 @@ public class Rainha extends Peca{
     }
 
     @Override
+    public Rainha moverPeca(Movimento movimento) {
+        return new Rainha(movimento.getPecaMovida().getCorPeca(), movimento.getCoordenadaDeDestino());
+    }
+
+    @Override
     public String toString() {
         return TipoDePeca.RAINHA.toString();
     }
