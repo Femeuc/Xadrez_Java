@@ -7,6 +7,8 @@ import com.xadrez.engine.jogador.JogadorPreto;
 import com.xadrez.engine.pecas.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Tabuleiro {
 
@@ -135,6 +137,11 @@ public class Tabuleiro {
         builder.setTurnoDoJogador(Cor.BRANCO);
         //Constrói o Tabuleiro
         return builder.build();
+    }
+
+    public Collection<Movimento> getTodosOsMovimentosLegais() {
+        return Stream.concat(this.jogadorBranco.getMovimentosLegais().stream(),
+                this.jogadorPreto.getMovimentosLegais().stream()).collect(Collectors.toList());
     }
 
     public static class Builder {
