@@ -33,7 +33,7 @@ public abstract class Jogador {
         return this.movimentosLegais;
     }
 
-    private static Collection<Movimento> calcularAtaquesEmQuadrado(int posicaoPeca, Collection<Movimento> movimentos) {
+    protected static Collection<Movimento> calcularAtaquesEmQuadrado(int posicaoPeca, Collection<Movimento> movimentos) {
         final List<Movimento> movimentosDeAtaque = new ArrayList<>();
         for(final Movimento movimento : movimentos) {
             if(posicaoPeca == movimento.getCoordenadaDeDestino()) {
@@ -96,8 +96,7 @@ public abstract class Jogador {
     }
 
     public abstract Collection<Peca> getPecasAtivas();
-
     public abstract Cor getCor();
-
     public abstract Jogador getOponente();
+    protected abstract Collection<Movimento> CalcularRoquesDoRei(Collection<Movimento> jogador, Collection<Movimento> oponente);
 }

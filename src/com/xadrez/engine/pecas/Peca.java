@@ -79,10 +79,20 @@ public abstract class Peca {
             public boolean isRei() {
                 return false;
             }
+
+            @Override
+            public boolean isTorre() {
+                return false;
+            }
         },
         CAVALO("C") {
             @Override
             public boolean isRei() {
+                return false;
+            }
+
+            @Override
+            public boolean isTorre() {
                 return false;
             }
         },
@@ -91,11 +101,21 @@ public abstract class Peca {
             public boolean isRei() {
                 return false;
             }
+
+            @Override
+            public boolean isTorre() {
+                return false;
+            }
         },
         TORRE("T") {
             @Override
             public boolean isRei() {
                 return false;
+            }
+
+            @Override
+            public boolean isTorre() {
+                return true;
             }
         },
         RAINHA("D") {
@@ -103,11 +123,21 @@ public abstract class Peca {
             public boolean isRei() {
                 return false;
             }
+
+            @Override
+            public boolean isTorre() {
+                return false;
+            }
         }, // D de "dama"
         REI("R") {
             @Override
             public boolean isRei() {
                 return true;
+            }
+
+            @Override
+            public boolean isTorre() {
+                return false;
             }
         };
 
@@ -123,6 +153,8 @@ public abstract class Peca {
         }
 
         public abstract boolean isRei();
+
+        public abstract boolean isTorre();
     }
 
 }

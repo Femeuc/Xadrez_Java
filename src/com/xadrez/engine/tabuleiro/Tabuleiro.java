@@ -147,6 +147,7 @@ public class Tabuleiro {
     public static class Builder {
         Map<Integer, Peca> configuracaoDoTabuleiro;
         Cor turnoDoJogador;
+        Peao peaoEnPassant;
 
         public Builder() {
             this.configuracaoDoTabuleiro = new HashMap<>();
@@ -164,6 +165,10 @@ public class Tabuleiro {
 
         public Tabuleiro build() {
             return new Tabuleiro(this);
+        }
+
+        public void setPeaoEnPassant(Peao peaoEnPassant) {
+            this.peaoEnPassant = peaoEnPassant;
         }
     }
 }
