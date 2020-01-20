@@ -2,6 +2,7 @@ package com.xadrez.engine.jogador;
 
 import com.xadrez.engine.Cor;
 import com.xadrez.engine.pecas.Peca;
+import com.xadrez.engine.pecas.Torre;
 import com.xadrez.engine.tabuleiro.Movimento;
 import com.xadrez.engine.tabuleiro.Quadrado;
 import com.xadrez.engine.tabuleiro.Tabuleiro;
@@ -33,7 +34,8 @@ public class JogadorBranco extends Jogador {
     }
 
     @Override
-    protected Collection<Movimento> CalcularRoquesDoRei(Collection<Movimento> movimentosDestejogador, Collection<Movimento> movimentosDoOponente) {
+    protected Collection<Movimento> calcularRoquesDoRei(final Collection<Movimento> movimentosDestejogador,
+                                                        final Collection<Movimento> movimentosDoOponente) {
         final List<Movimento> roquesDoRei = new ArrayList<>();
         if(this.rei.isPrimeiroMovimento() && !this.isEmCheck()) {
             // Roque pequeno das brancas
@@ -44,7 +46,10 @@ public class JogadorBranco extends Jogador {
                     if(Jogador.calcularAtaquesEmQuadrado(61, movimentosDoOponente).isEmpty() &&
                             Jogador.calcularAtaquesEmQuadrado(62, movimentosDoOponente).isEmpty() &&
                                     quadradoDaTorre.getPeca().getTipoDePeca().isTorre())
-                    roquesDoRei.add(null);
+                    roquesDoRei.add(new Movimento.MovimentoDeRoquePequeno(this.tabuleiro,
+                                                                          this.rei, 62,
+                                                                          (Torre) quadradoDaTorre.getPeca(),
+                                                                          quadradoDaTorre.getCoordenadaDoQuadrado(), 61));
                 }
             }
             if(!this.tabuleiro.getQuadrado(59).isOcupado() &&
@@ -52,7 +57,9 @@ public class JogadorBranco extends Jogador {
             !this.tabuleiro.getQuadrado(57).isOcupado()) {
                 final Quadrado quadradoDaTorre = this.tabuleiro.getQuadrado(56);
                 if(quadradoDaTorre.isOcupado() && quadradoDaTorre.getPeca().isPrimeiroMovimento()) {
-                    roquesDoRei.add(null);
+                    roquesDoRei.add(new Movimento.MovimentoDeRoqueGrande(this.tabuleiro, this.rei, 68,
+                                                                        (Torre) quadradoDaTorre.getPeca(),
+                                                                        quadradoDaTorre.getCoordenadaDoQuadrado(), 59));
                 }
             }
         }

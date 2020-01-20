@@ -32,6 +32,10 @@ public abstract class Quadrado {
 
     public abstract Peca getPeca();
 
+    public int getCoordenadaDoQuadrado() {
+        return this.coordenada;
+    }
+
     public static final class QuadradoVazio extends Quadrado {
         private QuadradoVazio(final int coordenada) {
             super(coordenada);

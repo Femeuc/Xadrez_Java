@@ -21,6 +21,7 @@ public abstract class Jogador {
             final Collection<Movimento> movimentosDoOponente) {
         this.tabuleiro = tabuleiro;
         this.rei = determinarRei();
+//      TODO this.movimentosLegais = Iterables.concat(movimentosLegais, calcularRoquesDoRei(movimentosLegais, movimentosDoOponente);
         this.movimentosLegais = movimentosLegais;
         this.isEmCheck = !Jogador.calcularAtaquesEmQuadrado(this.rei.getPosicaoPeca(), movimentosDoOponente).isEmpty();
     }
@@ -98,5 +99,5 @@ public abstract class Jogador {
     public abstract Collection<Peca> getPecasAtivas();
     public abstract Cor getCor();
     public abstract Jogador getOponente();
-    protected abstract Collection<Movimento> CalcularRoquesDoRei(Collection<Movimento> jogador, Collection<Movimento> oponente);
+    protected abstract Collection<Movimento> calcularRoquesDoRei(Collection<Movimento> jogador, Collection<Movimento> oponente);
 }
