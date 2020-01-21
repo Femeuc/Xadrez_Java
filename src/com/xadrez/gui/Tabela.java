@@ -1,11 +1,16 @@
 package com.xadrez.gui;
 
+import com.xadrez.engine.tabuleiro.Tabuleiro;
 import com.xadrez.engine.tabuleiro.TabuleiroUtil;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +18,14 @@ public class Tabela {
 
     private final JFrame gameFrame;
     private final PainelDoTabuleiro painelDoTabuleiro;
-    private Color quadradoCorClara = Color.decode("#FFFACD");
-    private Color quadradoCorEscura = Color.decode("#593E1A");
+    private final Color quadradoCorClara = Color.decode("#FFFACD");
+    private final Color quadradoCorEscura = Color.decode("#593E1A");
+    private final Tabuleiro tabuleiroDeXadrez;
 
     private final static Dimension DIMENSAO_DO_QUADRO_EXTERIOR = new Dimension(600, 600);
     private final static Dimension DIMENSAO_DO_PAINEL_DO_TABULEIRO = new Dimension(400, 350);
     private final static Dimension DIMENSAO_DO_PAINEL_DE_QUADRADO = new Dimension(10, 10);
+    private static String caminhoPadraoDosIconesDasPecas = "arte/fancy/";
 
     public Tabela() {
         this.gameFrame = new JFrame("JXadrez");
@@ -26,6 +33,7 @@ public class Tabela {
         final JMenuBar barraDeMenuDaTabela = criarBarraDeMenuDaTabela();
         this.gameFrame.setJMenuBar(barraDeMenuDaTabela);
         this.gameFrame.setSize(DIMENSAO_DO_QUADRO_EXTERIOR);
+        this.tabuleiroDeXadrez = Tabuleiro.criarTabuleiroPadrao();
         this.painelDoTabuleiro = new PainelDoTabuleiro();
         this.gameFrame.add(this.painelDoTabuleiro, BorderLayout.CENTER);
         this.gameFrame.setVisible(true);
@@ -85,7 +93,22 @@ public class Tabela {
             this.quadradoID = quadradoID;
             setPreferredSize(DIMENSAO_DO_PAINEL_DE_QUADRADO);
             atribuirCorDoQuadrado();
+            atribuirPecaNoQuadrado(tabuleiroDeXadrez);
             validate();
+        }
+
+        private void atribuirPecaNoQuadrado(final Tabuleiro tabuleiro) {
+            this.removeAll();
+            if(tabuleiro.getQuadrado(this.quadradoID).isOcupado()) {
+                try {
+                    final BufferedImage imagem = ImageIO.read(new File(caminhoPadraoDosIconesDasPecas +
+                            tabuleiro.getQuadrado(this.quadradoID).getPeca().getCorPeca().toString().substring(0, 1) +
+                            tabuleiro.getQuadrado(this.quadradoID).getPeca().toString() + ".gif"));
+                    add(new JLabel(new ImageIcon(imagem)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         private void atribuirCorDoQuadrado() {

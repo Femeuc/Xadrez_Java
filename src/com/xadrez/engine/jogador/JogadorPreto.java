@@ -55,7 +55,10 @@ public class JogadorPreto extends Jogador {
                     !this.tabuleiro.getQuadrado(2).isOcupado() &&
                     !this.tabuleiro.getQuadrado(3).isOcupado()) {
                 final Quadrado quadradoDaTorre = this.tabuleiro.getQuadrado(0);
-                if(quadradoDaTorre.isOcupado() && quadradoDaTorre.getPeca().isPrimeiroMovimento()) {
+                if(quadradoDaTorre.isOcupado() && quadradoDaTorre.getPeca().isPrimeiroMovimento() &&
+                    Jogador.calcularAtaquesEmQuadrado(2, movimentosDoOponente).isEmpty() &&
+                    Jogador.calcularAtaquesEmQuadrado(3, movimentosDestejogador).isEmpty() &&
+                    quadradoDaTorre.getPeca().getTipoDePeca().isTorre()) {
                     roquesDoRei.add(new Movimento.MovimentoDeRoqueGrande(this.tabuleiro, this.rei, 2,
                                                                         (Torre) quadradoDaTorre.getPeca(),
                                                                         quadradoDaTorre.getCoordenadaDoQuadrado(), 3));

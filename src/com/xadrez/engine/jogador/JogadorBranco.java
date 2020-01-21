@@ -56,7 +56,10 @@ public class JogadorBranco extends Jogador {
             !this.tabuleiro.getQuadrado(58).isOcupado() &&
             !this.tabuleiro.getQuadrado(57).isOcupado()) {
                 final Quadrado quadradoDaTorre = this.tabuleiro.getQuadrado(56);
-                if(quadradoDaTorre.isOcupado() && quadradoDaTorre.getPeca().isPrimeiroMovimento()) {
+                if(quadradoDaTorre.isOcupado() && quadradoDaTorre.getPeca().isPrimeiroMovimento() &&
+                    Jogador.calcularAtaquesEmQuadrado(58, movimentosDoOponente).isEmpty() &&
+                    Jogador.calcularAtaquesEmQuadrado(59, movimentosDoOponente).isEmpty() &&
+                    quadradoDaTorre.getPeca().getTipoDePeca().isTorre()) {
                     roquesDoRei.add(new Movimento.MovimentoDeRoqueGrande(this.tabuleiro, this.rei, 68,
                                                                         (Torre) quadradoDaTorre.getPeca(),
                                                                         quadradoDaTorre.getCoordenadaDoQuadrado(), 59));

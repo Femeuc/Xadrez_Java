@@ -55,4 +55,5 @@ public enum Cor {
     public abstract boolean isPreto();
 
     public abstract Jogador escolherJogador(JogadorBranco jogadorBranco, JogadorPreto jogadorPreto);
+
 }
