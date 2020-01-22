@@ -1,18 +1,29 @@
 package com.xadrez.gui;
 
+import com.sun.scenario.effect.InvertMask;
+import com.xadrez.engine.jogador.TransicaoDeMovimento;
+import com.xadrez.engine.pecas.Peca;
+import com.xadrez.engine.tabuleiro.Movimento;
+import com.xadrez.engine.tabuleiro.Quadrado;
 import com.xadrez.engine.tabuleiro.Tabuleiro;
 import com.xadrez.engine.tabuleiro.TabuleiroUtil;
+import com.google.common.collect.Lists;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Tabela {
 
@@ -20,12 +31,17 @@ public class Tabela {
     private final PainelDoTabuleiro painelDoTabuleiro;
     private final Color quadradoCorClara = Color.decode("#FFFACD");
     private final Color quadradoCorEscura = Color.decode("#593E1A");
-    private final Tabuleiro tabuleiroDeXadrez;
+    private Tabuleiro tabuleiroDeXadrez;
 
     private final static Dimension DIMENSAO_DO_QUADRO_EXTERIOR = new Dimension(600, 600);
     private final static Dimension DIMENSAO_DO_PAINEL_DO_TABULEIRO = new Dimension(400, 350);
     private final static Dimension DIMENSAO_DO_PAINEL_DE_QUADRADO = new Dimension(10, 10);
     private static String caminhoPadraoDosIconesDasPecas = "arte/fancy/";
+
+    private Quadrado quadradoDeOrigem;
+    private Quadrado quadradoDeDestino;
+    private Peca pecaMovidaPorHumano;
+    private BoardDirection boardDirection;
 
     public Tabela() {
         this.gameFrame = new JFrame("JXadrez");
@@ -35,6 +51,7 @@ public class Tabela {
         this.gameFrame.setSize(DIMENSAO_DO_QUADRO_EXTERIOR);
         this.tabuleiroDeXadrez = Tabuleiro.criarTabuleiroPadrao();
         this.painelDoTabuleiro = new PainelDoTabuleiro();
+        this.boardDirection = BoardDirection.NORMAL;
         this.gameFrame.add(this.painelDoTabuleiro, BorderLayout.CENTER);
         this.gameFrame.setVisible(true);
     }
@@ -42,6 +59,7 @@ public class Tabela {
     private JMenuBar criarBarraDeMenuDaTabela() {
         final JMenuBar barraDeMenuDaTabela = new JMenuBar();
         barraDeMenuDaTabela.add(criarMenuDeArquivo());
+        barraDeMenuDaTabela.add(criarMenuDePreferencias());
         return barraDeMenuDaTabela;
     }
 
@@ -68,6 +86,49 @@ public class Tabela {
         return menuDeArquivo;
     }
 
+    private JMenu criarMenuDePreferencias() {
+        final JMenu menuDePreferencias = new JMenu("Preferencias");
+        final JMenuItem inverterTabuleiroItem = new JMenuItem("Inverter Tabuleiro");
+        inverterTabuleiroItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                boardDirection = boardDirection.opposite();
+                painelDoTabuleiro.desenharTabuleiro(tabuleiroDeXadrez);
+            }
+        });
+        menuDePreferencias.add(inverterTabuleiroItem);
+        return menuDePreferencias;
+    }
+
+    enum BoardDirection {
+        NORMAL {
+            @Override
+            List<PainelDeQuadrado> traverse(final List<PainelDeQuadrado> boardTiles) {
+                return boardTiles;
+            }
+
+            @Override
+            BoardDirection opposite() {
+                return FLIPPED;
+            }
+        },
+        FLIPPED {
+            @Override
+            List<PainelDeQuadrado> traverse(final List<PainelDeQuadrado> boardTiles) {
+                return Lists.reverse(boardTiles);
+            }
+
+            @Override
+            BoardDirection opposite() {
+                return NORMAL;
+            }
+        };
+
+        abstract List<PainelDeQuadrado> traverse(final List<PainelDeQuadrado> boardTiles);
+        abstract BoardDirection opposite();
+
+    }
+
     private class PainelDoTabuleiro extends JPanel {
         final List<PainelDeQuadrado> quadradosDoTabuleiro;
 
@@ -82,6 +143,16 @@ public class Tabela {
             setPreferredSize(DIMENSAO_DO_PAINEL_DO_TABULEIRO);
             validate();
         }
+
+        public void desenharTabuleiro(final Tabuleiro tabuleiro) {
+            removeAll();
+            for(final PainelDeQuadrado painelDeQuadrado : boardDirection.traverse(quadradosDoTabuleiro)) {
+                painelDeQuadrado.desenharQuadrado(tabuleiro);
+                add(painelDeQuadrado);
+            }
+            validate();
+            repaint();
+        }
     }
 
     private class PainelDeQuadrado extends JPanel {
@@ -94,7 +165,69 @@ public class Tabela {
             setPreferredSize(DIMENSAO_DO_PAINEL_DE_QUADRADO);
             atribuirCorDoQuadrado();
             atribuirPecaNoQuadrado(tabuleiroDeXadrez);
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    if(isRightMouseButton(e)) {
+                        quadradoDeOrigem = null;
+                        quadradoDeDestino = null;
+                        pecaMovidaPorHumano = null;
+                    } else if(isLeftMouseButton(e)) {
+                        if(quadradoDeOrigem == null) {
+                            quadradoDeOrigem = tabuleiroDeXadrez.getQuadrado(quadradoID);
+                            pecaMovidaPorHumano = quadradoDeOrigem.getPeca();
+                            if(pecaMovidaPorHumano == null) {
+                                quadradoDeOrigem = null;
+                            }
+                        } else {
+                            quadradoDeDestino = tabuleiroDeXadrez.getQuadrado(quadradoID);
+                            final Movimento movimento = Movimento.MovimentoFactory.criarMovimento(tabuleiroDeXadrez, quadradoDeOrigem.getCoordenadaDoQuadrado(), quadradoDeDestino.getCoordenadaDoQuadrado());
+                            final TransicaoDeMovimento transicao = tabuleiroDeXadrez.jogadorAtual().fazerMovimento(movimento);
+                            if(transicao.getStatusDeMovimento().isFeito()) {
+                                tabuleiroDeXadrez = transicao.getTabuleiroEmTransicao();
+                                //TODO add the move to the move log
+                            }
+                            quadradoDeOrigem = null;
+                            quadradoDeDestino = null;
+                            pecaMovidaPorHumano = null;
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                painelDoTabuleiro.desenharTabuleiro(tabuleiroDeXadrez);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void mousePressed(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseReleased(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseEntered(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseExited(final MouseEvent mouseEvent) {
+
+                }
+            });
             validate();
+        }
+
+        public void desenharQuadrado(final Tabuleiro tabuleiro) {
+            atribuirCorDoQuadrado();
+            atribuirPecaNoQuadrado(tabuleiro);
+            validate();
+            repaint();
         }
 
         private void atribuirPecaNoQuadrado(final Tabuleiro tabuleiro) {

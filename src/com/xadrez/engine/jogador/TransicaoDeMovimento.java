@@ -19,4 +19,8 @@ public class TransicaoDeMovimento {
     public StatusDeMovimento getStatusDeMovimento() {
         return this.statusDeMovimento;
     }
+
+    public Tabuleiro getTabuleiroEmTransicao() {
+        return this.tabuleiroEmTransicao;
+    }
 }

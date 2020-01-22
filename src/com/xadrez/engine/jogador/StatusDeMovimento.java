@@ -3,21 +3,21 @@ package com.xadrez.engine.jogador;
 public enum StatusDeMovimento {
     FEITO{
         @Override
-        boolean isFeito() {
+        public boolean isFeito() {
             return true;
         }
     },
     MOVIMENTO_ILEGAL {
         @Override
-        boolean isFeito() {
+        public boolean isFeito() {
             return false;
         }
     },
     DEIXA_JOGADOR_EM_CHECK {
         @Override
-        boolean isFeito() {
+        public boolean isFeito() {
             return false;
         }
     };
-    abstract boolean isFeito();
+    public abstract boolean isFeito();
 }
