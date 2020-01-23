@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
@@ -42,6 +44,8 @@ public class Tabela {
     private Quadrado quadradoDeDestino;
     private Peca pecaMovidaPorHumano;
     private BoardDirection boardDirection;
+    private boolean destacarMovimentosLegais;
+
 
     public Tabela() {
         this.gameFrame = new JFrame("JXadrez");
@@ -52,8 +56,13 @@ public class Tabela {
         this.tabuleiroDeXadrez = Tabuleiro.criarTabuleiroPadrao();
         this.painelDoTabuleiro = new PainelDoTabuleiro();
         this.boardDirection = BoardDirection.NORMAL;
+        this.destacarMovimentosLegais = false;
         this.gameFrame.add(this.painelDoTabuleiro, BorderLayout.CENTER);
         this.gameFrame.setVisible(true);
+    }
+
+    private boolean getDestacarMovimentosLegais() {
+        return this.destacarMovimentosLegais;
     }
 
     private JMenuBar criarBarraDeMenuDaTabela() {
@@ -97,6 +106,15 @@ public class Tabela {
             }
         });
         menuDePreferencias.add(inverterTabuleiroItem);
+        menuDePreferencias.addSeparator();
+        final JCheckBoxMenuItem destaqueDeMovimentoLegalCheckbox = new JCheckBoxMenuItem("Destacar Movimentos Legais", false);
+        destaqueDeMovimentoLegalCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                destacarMovimentosLegais = destaqueDeMovimentoLegalCheckbox.isSelected();
+            }
+        });
+        menuDePreferencias.add(destaqueDeMovimentoLegalCheckbox);
         return menuDePreferencias;
     }
 
@@ -226,6 +244,7 @@ public class Tabela {
         public void desenharQuadrado(final Tabuleiro tabuleiro) {
             atribuirCorDoQuadrado();
             atribuirPecaNoQuadrado(tabuleiro);
+            destacarMovimentosLegais(tabuleiro);
             validate();
             repaint();
         }
@@ -242,6 +261,27 @@ public class Tabela {
                     e.printStackTrace();
                 }
             }
+        }
+
+        private void destacarMovimentosLegais(final Tabuleiro tabuleiro) {
+            if(destacarMovimentosLegais) {
+                for(final Movimento movimento : movimentosLegaisDaPeca(tabuleiro)) {
+                    if(movimento.getCoordenadaDeDestino() == this.quadradoID) {
+                        try {
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File("arte/misc/green_dot.png")))));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        private Collection<Movimento> movimentosLegaisDaPeca(final Tabuleiro tabuleiro) {
+            if(pecaMovidaPorHumano != null && pecaMovidaPorHumano.getCorPeca() == tabuleiro.jogadorAtual().getCor()) {
+                return pecaMovidaPorHumano.calcularMovimentosLegais(tabuleiro);
+            }
+            return Collections.emptyList();
         }
 
         private void atribuirCorDoQuadrado() {
