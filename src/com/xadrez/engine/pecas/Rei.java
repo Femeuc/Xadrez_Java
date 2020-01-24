@@ -16,7 +16,11 @@ public class Rei extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     public Rei(final Cor corPeca, final int posicaoPeca) {
-        super(TipoDePeca.REI, posicaoPeca, corPeca);
+        super(TipoDePeca.REI, posicaoPeca, corPeca, true);
+    }
+
+    public Rei(final Cor corPeca, final int posicaoPeca, boolean isPrimeiroMovimento) {
+        super(TipoDePeca.REI, posicaoPeca, corPeca, isPrimeiroMovimento);
     }
 
     @Override

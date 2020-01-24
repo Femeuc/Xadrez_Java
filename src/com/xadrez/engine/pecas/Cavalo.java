@@ -17,7 +17,11 @@ public class Cavalo extends Peca {
     private final static int[] MOVIMENTOS_POSSIVEIS = {-17, -15, -10, -6, 6,  10, 15, 17};
 
     public Cavalo(Cor corPeca, int posicaoPeca) {
-        super(TipoDePeca.CAVALO, posicaoPeca, corPeca);
+        super(TipoDePeca.CAVALO, posicaoPeca, corPeca, true);
+    }
+
+    public Cavalo(Cor corPeca, int posicaoPeca, boolean isPrimeiroMovimento) {
+        super(TipoDePeca.CAVALO, posicaoPeca, corPeca, isPrimeiroMovimento);
     }
 
     @Override

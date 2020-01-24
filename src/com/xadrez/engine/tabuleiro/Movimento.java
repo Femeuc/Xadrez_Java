@@ -9,6 +9,7 @@ public abstract class Movimento {
     protected final Tabuleiro tabuleiro;
     protected final Peca pecaMovida;
     protected final int coordenadaDestino;
+    protected final boolean isPrimeiroMovimento;
 
     public static final Movimento MOVIMENTO_NULO = new MovimentoNulo();
 
@@ -18,6 +19,15 @@ public abstract class Movimento {
         this.tabuleiro = tabuleiro;
         this.pecaMovida = pecaMovida;
         this.coordenadaDestino = coordenadaDestino;
+        this.isPrimeiroMovimento = pecaMovida.isPrimeiroMovimento();
+    }
+
+    private Movimento(final Tabuleiro tabuleiro,
+                      final int coordenadaDestino) {
+        this.tabuleiro = tabuleiro;
+        this.coordenadaDestino = coordenadaDestino;
+        this.pecaMovida = null;
+        this.isPrimeiroMovimento = false;
     }
 
     @Override
@@ -26,6 +36,7 @@ public abstract class Movimento {
         int result = 1;
         result = prime * result + this.coordenadaDestino;
         result = prime * result + this.pecaMovida.hashCode();
+        result = prime * result + this.pecaMovida.getPosicaoPeca();
         return result;
     }
 
@@ -38,7 +49,8 @@ public abstract class Movimento {
             return false;
         }
         final Movimento outroMovimento = (Movimento) o;
-        return getCoordenadaDeDestino() == outroMovimento.getCoordenadaDeDestino() &&
+        return getCoordenadaAtual() == outroMovimento.getCoordenadaAtual() &&
+                getCoordenadaDeDestino() == outroMovimento.getCoordenadaDeDestino() &&
                 getPecaMovida().equals(outroMovimento.getPecaMovida());
     }
 
@@ -86,6 +98,16 @@ public abstract class Movimento {
                             final Peca pecaMovida,
                             final int coordenadaDestino) {
             super(tabuleiro, pecaMovida, coordenadaDestino);
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoSemCaptura && super.equals(other);
+        }
+
+        @Override
+        public String toString() {
+            return pecaMovida.getTipoDePeca().toString() + TabuleiroUtil.getCoordenadaDePosicao(this.coordenadaDestino);
         }
 
     }

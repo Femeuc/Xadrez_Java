@@ -173,6 +173,38 @@ public class Tabela {
         }
     }
 
+    public static class LogDeMovimento {
+        private final List<Movimento> movimentos;
+
+        LogDeMovimento() {
+            this.movimentos = new ArrayList<>();
+        }
+
+        public List<Movimento> getMovimentos() {
+            return this.movimentos;
+        }
+
+        public void adicionarMovimento(final Movimento movimento) {
+            this.movimentos.add(movimento);
+        }
+
+        public int tamanho() {
+            return this.movimentos.size();
+        }
+
+        public void clear() {
+            this.movimentos.clear();
+        }
+
+        public Movimento removerMovimento(int index) {
+            return this.movimentos.remove(index);
+        }
+
+        public boolean removerMovimento(final Movimento movimento) {
+            return this.movimentos.remove(movimento);
+        }
+    }
+
     private class PainelDeQuadrado extends JPanel {
         private final int quadradoID;
 

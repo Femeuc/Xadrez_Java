@@ -14,7 +14,11 @@ public class Torre extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {-8, -1, 1, 8};
 
     public Torre(Cor corPeca, int posicaoPeca) {
-        super(TipoDePeca.TORRE, posicaoPeca, corPeca);
+        super(TipoDePeca.TORRE, posicaoPeca, corPeca, true);
+    }
+
+    public Torre(Cor corPeca, int posicaoPeca, boolean isPrimeiroMovimento) {
+        super(TipoDePeca.TORRE, posicaoPeca, corPeca, isPrimeiroMovimento);
     }
 
     @Override

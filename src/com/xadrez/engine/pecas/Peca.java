@@ -17,11 +17,12 @@ public abstract class Peca {
 
     Peca(final TipoDePeca tipoDePeca,
          final int posicaoPeca,
-         final Cor corPeca) {
+         final Cor corPeca,
+         final boolean isPrimeiroMovimento) {
         this.tipoDePeca = tipoDePeca;
         this.posicaoPeca = posicaoPeca;
         this.corPeca = corPeca;
-        this.isPrimeiroMovimento = false;
+        this.isPrimeiroMovimento = isPrimeiroMovimento;
         this.cachedHashCode = computeHashCode();
     }
 
