@@ -70,12 +70,16 @@ public abstract class Peca {
         return this.tipoDePeca;
     }
 
+    public int getValorDaPeca() {
+        return this.tipoDePeca.getValorDaPeca();
+    }
+
     public abstract Collection<Movimento> calcularMovimentosLegais(final Tabuleiro tabuleiro);
 
     public abstract Peca moverPeca(Movimento movimento);
 
     public enum TipoDePeca {
-        PEAO("P") {
+        PEAO("P", 100) {
             @Override
             public boolean isRei() {
                 return false;
@@ -86,7 +90,7 @@ public abstract class Peca {
                 return false;
             }
         },
-        CAVALO("C") {
+        CAVALO("C", 300) {
             @Override
             public boolean isRei() {
                 return false;
@@ -97,7 +101,7 @@ public abstract class Peca {
                 return false;
             }
         },
-        BISPO("B") {
+        BISPO("B", 300) {
             @Override
             public boolean isRei() {
                 return false;
@@ -108,7 +112,7 @@ public abstract class Peca {
                 return false;
             }
         },
-        TORRE("T") {
+        TORRE("T", 500) {
             @Override
             public boolean isRei() {
                 return false;
@@ -119,7 +123,7 @@ public abstract class Peca {
                 return true;
             }
         },
-        RAINHA("D") {
+        RAINHA("D", 900) {
             @Override
             public boolean isRei() {
                 return false;
@@ -130,7 +134,7 @@ public abstract class Peca {
                 return false;
             }
         }, // D de "dama"
-        REI("R") {
+        REI("R", 10000) {
             @Override
             public boolean isRei() {
                 return true;
@@ -143,14 +147,20 @@ public abstract class Peca {
         };
 
         private String nomeDaPeca;
+        private int valorDaPeca;
 
-        TipoDePeca(final String nomeDaPeca) {
+        TipoDePeca(final String nomeDaPeca, final int valorDaPeca) {
             this.nomeDaPeca = nomeDaPeca;
+            this.valorDaPeca = valorDaPeca;
         }
 
         @Override
         public String toString() {
             return this.nomeDaPeca;
+        }
+
+        public int getValorDaPeca() {
+            return this.valorDaPeca;
         }
 
         public abstract boolean isRei();
