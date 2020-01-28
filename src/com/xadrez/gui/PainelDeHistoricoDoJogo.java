@@ -47,6 +47,8 @@ public class PainelDeHistoricoDoJogo extends JPanel {
             final Movimento ultimoMovimento = logDeMovimento.getMovimentos().get(logDeMovimento.tamanho() - 1);
             final String textoDoMovimento = ultimoMovimento.toString();
             if(ultimoMovimento.getPecaMovida().getCorPeca().isBranco()) {
+                this.model.setValueAt(textoDoMovimento + calcularCheckECheckmateHash(tabuleiro), linhaAtual, 0);
+            } else if(ultimoMovimento.getPecaMovida().getCorPeca().isPreto()) {
                 this.model.setValueAt(textoDoMovimento + calcularCheckECheckmateHash(tabuleiro), linhaAtual - 1, 1);
             }
         }
@@ -113,6 +115,7 @@ public class PainelDeHistoricoDoJogo extends JPanel {
             }
             if(coluna == 0 ) {
                 linhaAtual.setMovimentoDoBranco((String) aValue);
+                fireTableRowsInserted(linha, linha);
             } else if(coluna == 1) {
                 linhaAtual.setMovimentoDoPreto((String) aValue);
                 fireTableCellUpdated(linha, coluna);

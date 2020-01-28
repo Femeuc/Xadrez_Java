@@ -19,7 +19,7 @@ public class    TabuleiroUtil {
     public static final boolean[] OITAVA_LINHA = iniciarLinha(56);
     public static final int INDICE_DO_QUADRADO_INICIAL = 0;
 
-    public final List<String> NOTACAO_ALGEBRICA = iniciarNotacaoAlgebrica();
+    public static final List<String> NOTACAO_ALGEBRICA = iniciarNotacaoAlgebrica();
     public final Map<String, Integer> POSICAO_PARA_COORDENADA = iniciarPosicaoParaCoordenadaMap();
 
     public static final int QUANTIDADE_QUADRADOS = 64;
@@ -47,14 +47,6 @@ public class    TabuleiroUtil {
         return linha;
     }
 
-    private Map<String, Integer> iniciarPosicaoParaCoordenadaMap() {
-        final Map<String, Integer> posicaoParaCoordenada = new HashMap<>();
-        for (int i = INDICE_DO_QUADRADO_INICIAL; i < QUANTIDADE_QUADRADOS; i++) {
-            posicaoParaCoordenada.put(NOTACAO_ALGEBRICA.get(i), i);
-        }
-        return Collections.unmodifiableMap(posicaoParaCoordenada);
-    }
-
     private static List<String> iniciarNotacaoAlgebrica() {
         return Collections.unmodifiableList(Arrays.asList(
                 "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
@@ -67,6 +59,14 @@ public class    TabuleiroUtil {
                 "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"));
     }
 
+    private Map<String, Integer> iniciarPosicaoParaCoordenadaMap() {
+        final Map<String, Integer> posicaoParaCoordenada = new HashMap<>();
+        for (int i = INDICE_DO_QUADRADO_INICIAL; i < QUANTIDADE_QUADRADOS; i++) {
+            posicaoParaCoordenada.put(NOTACAO_ALGEBRICA.get(i), i);
+        }
+        return Collections.unmodifiableMap(posicaoParaCoordenada);
+    }
+
     public static boolean isQuadradoValido(final int coordenada) {
         return coordenada >= 0 && coordenada < QUANTIDADE_QUADRADOS;
     }
@@ -75,7 +75,7 @@ public class    TabuleiroUtil {
         return POSICAO_PARA_COORDENADA.get(posicao);
     }
 
-    public String getCoordenadaDePosicao(final int coordenada) {
+    public static String getCoordenadaDePosicao(final int coordenada) {
         return NOTACAO_ALGEBRICA.get(coordenada);
     }
 }

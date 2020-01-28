@@ -211,6 +211,11 @@ public abstract class Movimento {
             builder.setTurnoDoJogador(this.tabuleiro.jogadorAtual().getOponente().getCor());
             return builder.build();
         }
+
+        @Override
+        public String toString() {
+            return TabuleiroUtil.getCoordenadaDePosicao(this.coordenadaDestino);
+        }
     }
 
     static abstract class MovimentoDeRoque extends Movimento {
@@ -296,7 +301,7 @@ public abstract class Movimento {
     public static final class MovimentoNulo extends Movimento {
 
         public MovimentoNulo() {
-            super(null, null, -1);
+            super(null, -1);
         }
 
         @Override

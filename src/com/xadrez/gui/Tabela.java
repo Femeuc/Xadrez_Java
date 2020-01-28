@@ -30,6 +30,9 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 public class Tabela {
 
     private final JFrame gameFrame;
+    private final PainelDeHistoricoDoJogo painelDeHistoricoDoJogo;
+    private final PainelDePecasCapturadas painelDePecasCapturadas;
+    private final LogDeMovimento logDeMovimento;
     private final PainelDoTabuleiro painelDoTabuleiro;
     private final Color quadradoCorClara = Color.decode("#FFFACD");
     private final Color quadradoCorEscura = Color.decode("#593E1A");
@@ -54,10 +57,15 @@ public class Tabela {
         this.gameFrame.setJMenuBar(barraDeMenuDaTabela);
         this.gameFrame.setSize(DIMENSAO_DO_QUADRO_EXTERIOR);
         this.tabuleiroDeXadrez = Tabuleiro.criarTabuleiroPadrao();
+        this.painelDeHistoricoDoJogo = new PainelDeHistoricoDoJogo();
+        this.painelDePecasCapturadas = new PainelDePecasCapturadas();
+        this.logDeMovimento = new LogDeMovimento();
         this.painelDoTabuleiro = new PainelDoTabuleiro();
         this.boardDirection = BoardDirection.NORMAL;
         this.destacarMovimentosLegais = false;
+        this.gameFrame.add(this.painelDePecasCapturadas, BorderLayout.WEST);
         this.gameFrame.add(this.painelDoTabuleiro, BorderLayout.CENTER);
+        this.gameFrame.add(this.painelDeHistoricoDoJogo, BorderLayout.EAST);
         this.gameFrame.setVisible(true);
     }
 
@@ -235,7 +243,7 @@ public class Tabela {
                             final TransicaoDeMovimento transicao = tabuleiroDeXadrez.jogadorAtual().fazerMovimento(movimento);
                             if(transicao.getStatusDeMovimento().isFeito()) {
                                 tabuleiroDeXadrez = transicao.getTabuleiroEmTransicao();
-                                //TODO add the move to the move log
+                                logDeMovimento.adicionarMovimento(movimento);
                             }
                             quadradoDeOrigem = null;
                             quadradoDeDestino = null;
@@ -244,6 +252,8 @@ public class Tabela {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
+                                painelDeHistoricoDoJogo.redo(tabuleiroDeXadrez, logDeMovimento);
+                                painelDePecasCapturadas.refazer(logDeMovimento);
                                 painelDoTabuleiro.desenharTabuleiro(tabuleiroDeXadrez);
                             }
                         });
