@@ -93,6 +93,25 @@ public abstract class Movimento {
         return builder.build();
     }
 
+    public static class MovimentoDeCapturaMajor extends MovimentoDeCaptura {
+        public MovimentoDeCapturaMajor(final Tabuleiro tabuleiro,
+                                       final Peca pecaMovida,
+                                       final int coordenadaDeDestino,
+                                       final Peca pecaAtacada) {
+            super(tabuleiro, pecaMovida, coordenadaDeDestino, pecaAtacada);
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoDeCapturaMajor && super.equals(other);
+        }
+
+        @Override
+        public String toString() {
+            return pecaMovida.getTipoDePeca() + TabuleiroUtil.getCoordenadaDePosicao(this.coordenadaDestino);
+        }
+    }
+
     public static final class MovimentoSemCaptura extends Movimento {
         public MovimentoSemCaptura(final Tabuleiro tabuleiro,
                             final Peca pecaMovida,
@@ -142,11 +161,6 @@ public abstract class Movimento {
         }
 
         @Override
-        public Tabuleiro executar() {
-            return null;
-        }
-
-        @Override
         public boolean isCaptura() {
             return true;
         }
@@ -164,6 +178,16 @@ public abstract class Movimento {
                                 int coordenadaDestino) {
             super(tabuleiro, pecaMovida, coordenadaDestino);
         }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoDePeao && super.equals(other);
+        }
+
+        @Override
+        public String toString() {
+            return TabuleiroUtil.getCoordenadaDePosicao(this.coordenadaDestino);
+        }
     }
 
     public static class MovimentoDeCapturaParaPeao extends MovimentoDeCaptura {
@@ -174,6 +198,17 @@ public abstract class Movimento {
                                            final Peca pecaCapturada) {
             super(tabuleiro, pecaMovida, coordenadaDestino, pecaCapturada);
         }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoDeCapturaParaPeao && super.equals(other);
+        }
+
+        @Override
+        public String toString() {
+            return TabuleiroUtil.getCoordenadaDePosicao(this.pecaMovida.getPosicaoPeca()).substring(0, 1) + "x" +
+                    TabuleiroUtil.getCoordenadaDePosicao(this.coordenadaDestino);
+        }
     }
 
     public static final class  MovimentoDeCapturaParaPeaoEnPassant  extends MovimentoDeCapturaParaPeao {
@@ -183,6 +218,29 @@ public abstract class Movimento {
                                            int coordenadaDestino,
                                            final Peca pecaCapturada) {
             super(tabuleiro, pecaMovida, coordenadaDestino, pecaCapturada);
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoDeCapturaParaPeaoEnPassant && super.equals(other);
+        }
+
+        @Override
+        public Tabuleiro executar() {
+            final Builder builder = new Builder();
+            for(final Peca peca : this.tabuleiro.jogadorAtual().getPecasAtivas()) {
+                if(!this.pecaMovida.equals(peca)) {
+                    builder.setPeca(peca);
+                }
+            }
+            for(final Peca peca : this.tabuleiro.jogadorAtual().getOponente().getPecasAtivas()) {
+                if(!peca.equals(this.getPecaSobAtaque())) {
+                    builder.setPeca(peca);
+                }
+            }
+            builder.setPeca(this.pecaMovida.moverPeca(this));
+            builder.setTurnoDoJogador(this.tabuleiro.jogadorAtual().getOponente().getCor());
+            return builder.build();
         }
     }
 
@@ -262,6 +320,27 @@ public abstract class Movimento {
             return builder.build();
         }
 
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + this.torreDeRoque.hashCode();
+            result = prime * result + this.posicaoDeDestinoDaTorreDeRoque;
+            return result;
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            if(this == other) {
+                return true;
+            }
+            if(!(other instanceof MovimentoDeRoque)) {
+                return false;
+            }
+            final MovimentoDeRoque outroMovimentoDeRoque = (MovimentoDeRoque) other;
+            return super.equals(outroMovimentoDeRoque) && this.torreDeRoque.equals(outroMovimentoDeRoque.getTorreDeRoque());
+        }
+
     }
 
     public static final class MovimentoDeRoquePequeno extends MovimentoDeRoque {
@@ -273,6 +352,11 @@ public abstract class Movimento {
                                        final int posicaoInicialDaTorreDeRoque,
                                        final int posicaoDeDestinoDaTorreDeRoque) {
             super(tabuleiro, pecaMovida, coordenadaDestino, torreDeRoque, posicaoInicialDaTorreDeRoque, posicaoDeDestinoDaTorreDeRoque);
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoDeRoquePequeno && super.equals(other);
         }
 
         @Override
@@ -293,6 +377,11 @@ public abstract class Movimento {
         }
 
         @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MovimentoDeRoqueGrande && super.equals(other);
+        }
+
+        @Override
         public String toString() {
             return "0-0-0";
         }
@@ -307,6 +396,11 @@ public abstract class Movimento {
         @Override
         public Tabuleiro executar() {
             throw new RuntimeException("Não é possível executar o movimento nulo");
+        }
+
+        @Override
+        public int getCoordenadaAtual() {
+            return -1;
         }
     }
 
