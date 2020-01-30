@@ -46,7 +46,7 @@ public class Cavalo extends Peca {
                     final Peca destinoPeca = quadradoCandidato.getPeca();
                     final Cor corPeca = destinoPeca.getCorPeca();
                     if(this.corPeca != corPeca) {
-                        movimentosLegais.add(new MovimentoDeCaptura(tabuleiro, this, movimentoCandidato, destinoPeca));
+                        movimentosLegais.add(new MovimentoDeCapturaMajor(tabuleiro, this, movimentoCandidato, destinoPeca));
                     }
                 }
             }

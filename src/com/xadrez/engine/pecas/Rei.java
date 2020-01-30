@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.xadrez.engine.tabuleiro.Movimento.*;
+
 public class Rei extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {-9, -8, -7, -1, 1, 7, 8, 9};
 
@@ -41,7 +43,7 @@ public class Rei extends Peca{
                     final Peca destinoPeca = quadradoCandidato.getPeca();
                     final Cor corPeca = destinoPeca.getCorPeca();
                     if(this.corPeca != corPeca) {
-                        movimentosLegais.add(new MovimentoDeCaptura(tabuleiro, this, movimentoCandidato, destinoPeca));
+                        movimentosLegais.add(new MovimentoDeCapturaMajor(tabuleiro, this, movimentoCandidato, destinoPeca));
                     }
                 }
             }

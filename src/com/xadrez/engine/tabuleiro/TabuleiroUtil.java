@@ -2,7 +2,7 @@ package com.xadrez.engine.tabuleiro;
 
 import java.util.*;
 
-public class    TabuleiroUtil {
+public class TabuleiroUtil {
 
     public static final boolean[] PRIMEIRA_COLUNA = iniciarColuna(0);
     public static final boolean[] SEGUNDA_COLUNA = iniciarColuna(1);

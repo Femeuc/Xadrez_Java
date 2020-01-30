@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.xadrez.engine.tabuleiro.Movimento.*;
+
 public class Torre extends Peca{
     private final static int[] MOVIMENTOS_POSSIVEIS = {-8, -1, 1, 8};
 
@@ -36,12 +38,12 @@ public class Torre extends Peca{
                 if(TabuleiroUtil.isQuadradoValido(movimentoCandidato)) {
                     final Quadrado quadradoCandidato = tabuleiro.getQuadrado(movimentoCandidato);
                     if(!quadradoCandidato.isOcupado()) {
-                        movimentosLegais.add(new Movimento.MovimentoSemCaptura(tabuleiro, this, movimentoCandidato));
+                        movimentosLegais.add(new MovimentoSemCaptura(tabuleiro, this, movimentoCandidato));
                     } else {
                         final Peca destinoPeca = quadradoCandidato.getPeca();
                         final Cor corPeca = destinoPeca.getCorPeca();
                         if(this.corPeca != corPeca) {
-                            movimentosLegais.add(new Movimento.MovimentoDeCaptura(tabuleiro, this, movimentoCandidato, destinoPeca));
+                            movimentosLegais.add(new MovimentoDeCapturaMajor(tabuleiro, this, movimentoCandidato, destinoPeca));
                         }
                         break; // Esse break é ativado quando alguma peça bloqueia movimentos do bispo, ficando no seu caminho
                     }

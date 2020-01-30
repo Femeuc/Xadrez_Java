@@ -33,7 +33,11 @@ public class Peao extends Peca{
                 continue;
             }
             if(movimentoAtual == 8 && !tabuleiro.getQuadrado(movimentoCandidato).isOcupado()) {
-                movimentosLegais.add(new MovimentoSemCaptura(tabuleiro, this, movimentoCandidato));
+                if(this.corPeca.isQuadradoDePromocaoDoPeao(movimentoCandidato)) {
+                    movimentosLegais.add(new PromocaoDePeao(new MovimentoDePeao(tabuleiro, this, movimentoCandidato)));
+                } else {
+                    movimentosLegais.add(new MovimentoDePeao(tabuleiro, this, movimentoCandidato));
+                }
             } else if(movimentoAtual == 16 && this.isPrimeiroMovimento() &&
                     ((TabuleiroUtil.SEGUNDA_LINHA[this.posicaoPeca] && this.getCorPeca().isPreto()) ||
                     (TabuleiroUtil.SETIMA_LINHA[this.posicaoPeca] && this.getCorPeca().isBranco()))) {
@@ -47,8 +51,19 @@ public class Peao extends Peca{
                 if(tabuleiro.getQuadrado(movimentoCandidato).isOcupado()) {
                      final Peca pecaNoCandidato = tabuleiro.getQuadrado(movimentoCandidato).getPeca();
                      if(this.corPeca != pecaNoCandidato.getCorPeca()) {
-                         movimentosLegais.add(new MovimentoDeCapturaParaPeao(tabuleiro, this, movimentoCandidato, pecaNoCandidato));
+                         if(this.corPeca.isQuadradoDePromocaoDoPeao(movimentoCandidato)) {
+                             movimentosLegais.add(new PromocaoDePeao(new MovimentoDeCapturaParaPeao(tabuleiro, this, movimentoCandidato, pecaNoCandidato)));
+                         } else {
+                             movimentosLegais.add(new MovimentoDeCapturaParaPeao(tabuleiro, this, movimentoCandidato, pecaNoCandidato));
+                         }
                      }
+                } else if(tabuleiro.getPeaoEnPassant() != null) {
+                    if(tabuleiro.getPeaoEnPassant().getPosicaoPeca() == (this.posicaoPeca + (this.corPeca.getDirecaoOposta()))) {
+                        final Peca pecaNoCandidato = tabuleiro.getPeaoEnPassant();
+                        if(this.corPeca != pecaNoCandidato.getCorPeca()) {
+                            movimentosLegais.add(new MovimentoDeCapturaParaPeaoEnPassant(tabuleiro, this, movimentoCandidato, pecaNoCandidato));
+                        }
+                    }
                 }
 
             } else if(movimentoAtual == 9 &&
@@ -57,7 +72,18 @@ public class Peao extends Peca{
                 if(tabuleiro.getQuadrado(movimentoCandidato).isOcupado()) {
                     final Peca pecaNoCandidato = tabuleiro.getQuadrado(movimentoCandidato).getPeca();
                     if(this.corPeca != pecaNoCandidato.getCorPeca()) {
-                        movimentosLegais.add(new MovimentoDeCapturaParaPeao(tabuleiro, this, movimentoCandidato, pecaNoCandidato));
+                        if(this.corPeca.isQuadradoDePromocaoDoPeao(movimentoCandidato)) {
+                            movimentosLegais.add(new PromocaoDePeao(new MovimentoDeCapturaParaPeao(tabuleiro, this, movimentoCandidato, pecaNoCandidato)));
+                        } else {
+                            movimentosLegais.add(new MovimentoDeCapturaParaPeao(tabuleiro, this, movimentoCandidato, pecaNoCandidato));
+                        }
+                    }
+                } else if(tabuleiro.getPeaoEnPassant() != null) {
+                    if(tabuleiro.getPeaoEnPassant().getPosicaoPeca() == (this.posicaoPeca - (this.corPeca.getDirecaoOposta()))) {
+                        final Peca pecaNoCandidato = tabuleiro.getPeaoEnPassant();
+                        if(this.corPeca != pecaNoCandidato.getCorPeca()) {
+                            movimentosLegais.add(new MovimentoDeCapturaParaPeaoEnPassant(tabuleiro, this, movimentoCandidato, pecaNoCandidato));
+                        }
                     }
                 }
             }
@@ -73,5 +99,9 @@ public class Peao extends Peca{
     @Override
     public String toString() {
         return TipoDePeca.PEAO.toString();
+    }
+
+    public Peca getPecaDePromocao() {
+        return new Rainha(this.corPeca, this.posicaoPeca, false);
     }
 }

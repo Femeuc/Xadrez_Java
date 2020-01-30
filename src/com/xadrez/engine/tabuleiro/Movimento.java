@@ -54,6 +54,10 @@ public abstract class Movimento {
                 getPecaMovida().equals(outroMovimento.getPecaMovida());
     }
 
+    public Tabuleiro getTabuleiro() {
+        return this.tabuleiro;
+    }
+
     public int getCoordenadaAtual() {
         return this.getPecaMovida().getPosicaoPeca();
     }
@@ -241,6 +245,60 @@ public abstract class Movimento {
             builder.setPeca(this.pecaMovida.moverPeca(this));
             builder.setTurnoDoJogador(this.tabuleiro.jogadorAtual().getOponente().getCor());
             return builder.build();
+        }
+    }
+
+    public static class PromocaoDePeao extends Movimento {
+
+        final Movimento movimentoDecorated;
+        final Peao peaoPromovido;
+
+        public PromocaoDePeao(final Movimento movimentoDecorated) {
+            super(movimentoDecorated.getTabuleiro(), movimentoDecorated.getPecaMovida(), movimentoDecorated.getCoordenadaDeDestino());
+            this.movimentoDecorated = movimentoDecorated;
+            this.peaoPromovido = (Peao) movimentoDecorated.getPecaMovida();
+        }
+
+        @Override
+        public int hashCode() {
+            return movimentoDecorated.hashCode() + (31 + peaoPromovido.hashCode());
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof PromocaoDePeao && super.equals(other);
+        }
+
+        @Override
+        public Tabuleiro executar() {
+            final Tabuleiro tabuleiroDoPeaoMovido = this.movimentoDecorated.executar();
+            final Tabuleiro.Builder builder = new Builder();
+            for(final Peca peca : tabuleiroDoPeaoMovido.jogadorAtual().getPecasAtivas()) {
+                if(!this.peaoPromovido.equals(peca)) {
+                    builder.setPeca(peca);
+                }
+            }
+            for(final Peca peca : tabuleiroDoPeaoMovido.jogadorAtual().getOponente().getPecasAtivas()) {
+                builder.setPeca(peca);
+            }
+            builder.setPeca(this.peaoPromovido.getPecaDePromocao().moverPeca(this));
+            builder.setTurnoDoJogador(tabuleiroDoPeaoMovido.jogadorAtual().getCor());
+            return builder.build();
+        }
+
+        @Override
+        public boolean isCaptura() {
+            return this.movimentoDecorated.isCaptura();
+        }
+
+        @Override
+        public Peca getPecaSobAtaque() {
+            return this.movimentoDecorated.getPecaSobAtaque();
+        }
+
+        @Override
+        public String toString() {
+            return "";
         }
     }
 

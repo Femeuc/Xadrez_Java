@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.xadrez.engine.tabuleiro.Movimento.*;
+
 public class Bispo extends Peca {
     private final static int[] MOVIMENTOS_POSSIVEIS = {-9, -7, 7, 9};
 
@@ -43,7 +45,7 @@ public class Bispo extends Peca {
                         final Peca destinoPeca = quadradoCandidato.getPeca();
                         final Cor corPeca = destinoPeca.getCorPeca();
                         if(this.corPeca != corPeca) {
-                            movimentosLegais.add(new MovimentoDeCaptura(tabuleiro, this, movimentoCandidato, destinoPeca));
+                            movimentosLegais.add(new MovimentoDeCapturaMajor(tabuleiro, this, movimentoCandidato, destinoPeca));
                         }
                         break; // Esse break é ativado quando alguma peça bloqueia movimentos do bispo, ficando no seu caminho
                     }
